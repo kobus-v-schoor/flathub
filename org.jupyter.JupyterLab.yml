@@ -1,0 +1,34 @@
+app-id: org.jupyter.JupyterLab
+runtime: org.freedesktop.Platform
+runtime-version: '21.08'
+sdk: org.freedesktop.Sdk
+
+command: jl.sh
+
+finish-args:
+  # allow displaying on x11 and wayland
+  - --share=ipc
+  - --socket=x11
+  - --socket=wayland
+  # for electron gpu acceleration
+  - --device=dri
+
+# rename-desktop-file: jupyterlab_app.desktop
+# rename-icon: jupyterlab_app
+cleanup:
+  - /lib/debug
+
+modules:
+  - name: jupyterlab
+    buildsystem: simple
+    build-commands:
+      - ar x JupyterLab-Setup-Debian.deb
+      - tar -xf data.tar.xz -C $FLATPAK_DEST
+      - $FLATPAK_DEST/opt/JupyterLab/resources/env_installer/JupyterLabAppServer-3.1.12-1-Linux-x86_64.sh -b -p "$FLATPAK_DEST/opt/JupyterLab/resources/jlab_server"
+      - install -Dm755 -t $FLATPAK_DEST/bin/ jl.sh
+    sources:
+      - type: file
+        url: https://github.com/jupyterlab/jupyterlab_app/releases/download/v3.1.12-1/JupyterLab-Setup-Debian.deb
+        sha256: 75997ce3bc455955833875147bd8f003f99b0eab525ab93933f4cb13a6116d15
+      - type: file
+        path: jl.sh
