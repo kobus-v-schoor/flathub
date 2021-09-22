@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=JupyterLab
+Exec=jl.sh %U
+Terminal=false
+Type=Application
+Icon=org.jupyter.JupyterLab
+StartupWMClass=JupyterLab
+Comment=A native app for JupyterLab, based on electron.
+Categories=Science;Development;
